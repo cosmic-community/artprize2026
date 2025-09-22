@@ -107,7 +107,7 @@ export default function IdeaModal({ children }: IdeaModalProps) {
           onClick={closeModal}
         >
           <div
-            className="w-full max-w-2xl max-h-full overflow-y-auto bg-black border border-gray-800 rounded-lg p-8"
+            className="w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-black border border-gray-800 rounded-lg p-8"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="space-y-6">
@@ -151,7 +151,7 @@ export default function IdeaModal({ children }: IdeaModalProps) {
                       value={idea}
                       onChange={(e) => setIdea(e.target.value)}
                       placeholder="What should be done with the money? Let your imagination guide the experiment..."
-                      className="w-full h-32 bg-gray-900 border border-gray-700 rounded px-4 py-3 text-white placeholder-gray-500 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 resize-none"
+                      className="w-full h-40 bg-gray-900 border border-gray-700 rounded px-4 py-3 text-white placeholder-gray-500 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500 resize-none"
                       maxLength={1000}
                       disabled={isSubmitting}
                       required
