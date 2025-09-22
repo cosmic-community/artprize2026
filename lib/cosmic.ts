@@ -6,6 +6,13 @@ export const cosmic = createBucketClient({
   readKey: process.env.COSMIC_READ_KEY as string,
 })
 
+// Server-side client for write operations
+export const cosmicWrite = createBucketClient({
+  bucketSlug: process.env.COSMIC_BUCKET_SLUG as string,
+  readKey: process.env.COSMIC_READ_KEY as string,
+  writeKey: process.env.COSMIC_WRITE_KEY as string,
+})
+
 function hasStatus(error: unknown): error is { status: number } {
   return typeof error === 'object' && error !== null && 'status' in error;
 }
@@ -48,5 +55,22 @@ export async function getSiteSettings(): Promise<SiteConfig> {
     }
     console.error('Error fetching site settings:', error)
     return defaults
+  }
+}
+
+export async function submitIdea(idea: string): Promise<boolean> {
+  try {
+    await cosmicWrite.objects.insertOne({
+      title: `Idea submitted on ${new Date().toLocaleDateString()}`,
+      type: 'ideas',
+      metadata: {
+        idea: idea,
+        submitted_date: new Date().toISOString().split('T')[0]
+      }
+    })
+    return true
+  } catch (error) {
+    console.error('Error submitting idea:', error)
+    return false
   }
 }

@@ -4,6 +4,7 @@ import Countdown from '@/components/Countdown'
 import TotalRaised from '@/components/TotalRaised'
 import PrimaryLink from '@/components/PrimaryLink'
 import ManifestoModal from '@/components/ManifestoModal'
+import IdeaModal from '@/components/IdeaModal'
 import Disclaimer from '@/components/Disclaimer'
 
 export const revalidate = 60 // Revalidate every minute
@@ -48,13 +49,11 @@ export default async function HomePage() {
               Fuel the Experiment
             </PrimaryLink>
             
-            <PrimaryLink 
-              href={settings.suggestion_link}
-              external
-              className="hover:scale-105 transition-transform duration-200"
-            >
-              Whisper Your Ideas
-            </PrimaryLink>
+            <IdeaModal>
+              <div className="text-lg font-light underline decoration-1 underline-offset-4 hover:no-underline transition-all duration-200 focus-ring cursor-help">
+                Whisper Your Ideas
+              </div>
+            </IdeaModal>
           </div>
         </div>
       </main>

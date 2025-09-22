@@ -30,6 +30,14 @@ export interface Update extends CosmicObject {
   };
 }
 
+export interface Idea extends CosmicObject {
+  type: 'ideas';
+  metadata: {
+    idea?: string;
+    submitted_date?: string;
+  };
+}
+
 export interface CosmicResponse<T> {
   objects: T[];
   total: number;
