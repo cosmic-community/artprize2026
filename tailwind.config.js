@@ -19,7 +19,9 @@ module.exports = {
       animation: {
         'fade-in': 'fadeIn 0.3s ease-out',
         'fade-out': 'fadeOut 0.3s ease-out',
-        'counter': 'counter 0.5s ease-out'
+        'counter': 'counter 0.5s ease-out',
+        'spin': 'spin 1s linear infinite',
+        'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
       },
       keyframes: {
         fadeIn: {
@@ -33,7 +35,18 @@ module.exports = {
         counter: {
           '0%': { transform: 'scale(1.05)' },
           '100%': { transform: 'scale(1)' }
+        },
+        spin: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' }
+        },
+        pulse: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.5' }
         }
+      },
+      gridTemplateColumns: {
+        '13': 'repeat(13, minmax(0, 1fr))',
       }
     },
   },
