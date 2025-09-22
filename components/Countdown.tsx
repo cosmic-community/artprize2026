@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { calculateTimeRemaining, CountdownTime } from '@/lib/time'
+import { calculateTimeRemaining } from '@/lib/time'
+import { CountdownTime } from '@/types'
 
 interface CountdownProps {
   targetDate: Date
