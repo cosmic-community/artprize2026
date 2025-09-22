@@ -38,6 +38,15 @@ export interface Idea extends CosmicObject {
   };
 }
 
+export interface Subscriber extends CosmicObject {
+  type: 'subscribers';
+  metadata: {
+    email?: string;
+    subscribed_date?: string;
+    status?: 'Active' | 'Unsubscribed';
+  };
+}
+
 export interface CosmicResponse<T> {
   objects: T[];
   total: number;

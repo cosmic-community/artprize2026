@@ -74,3 +74,35 @@ export async function submitIdea(idea: string): Promise<boolean> {
     return false
   }
 }
+
+export async function subscribeEmail(email: string): Promise<boolean> {
+  try {
+    // Check if email already exists
+    const existingResponse = await cosmic.objects
+      .find({ 
+        type: 'subscribers',
+        'metadata.email': email 
+      })
+      .props(['id'])
+
+    if (existingResponse.objects.length > 0) {
+      // Email already exists
+      return false
+    }
+
+    // Create new subscriber
+    await cosmicWrite.objects.insertOne({
+      title: `Subscriber - ${email}`,
+      type: 'subscribers',
+      metadata: {
+        email: email,
+        subscribed_date: new Date().toISOString().split('T')[0],
+        status: 'Active'
+      }
+    })
+    return true
+  } catch (error) {
+    console.error('Error subscribing email:', error)
+    return false
+  }
+}
