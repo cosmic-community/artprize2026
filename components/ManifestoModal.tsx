@@ -21,7 +21,7 @@ export default function ManifestoModal({ manifesto }: ManifestoModalProps) {
 
       {isOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50">
-          <div className="bg-black border border-gray-800 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+          <div className="bg-black border border-gray-800 max-w-4xl w-full max-h-[80vh] overflow-y-auto">
             <div className="p-6 space-y-6">
               <div className="flex justify-between items-start">
                 <div className="flex-1">
