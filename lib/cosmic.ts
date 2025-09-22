@@ -77,25 +77,42 @@ export async function submitIdea(idea: string): Promise<boolean> {
 
 export async function subscribeEmail(email: string): Promise<boolean> {
   try {
-    // Check if email already exists
-    const existingResponse = await cosmic.objects
-      .find({ 
-        type: 'subscribers',
-        'metadata.email': email 
-      })
-      .props(['id'])
+    // Check if email already exists using proper query structure
+    try {
+      const existingResponse = await cosmic.objects
+        .find({ type: 'subscribers' })
+        .props(['id', 'metadata'])
+        .depth(1)
 
-    if (existingResponse.objects.length > 0) {
-      // Email already exists
-      return false
+      // Check if any existing subscriber has this email
+      const emailExists = existingResponse.objects.some((subscriber: any) => 
+        subscriber.metadata?.email?.toLowerCase() === email.toLowerCase()
+      )
+
+      if (emailExists) {
+        console.log(`Email ${email} already exists in subscribers`)
+        return false
+      }
+    } catch (checkError) {
+      // If checking fails due to 404 (no subscribers yet), continue with creation
+      if (hasStatus(checkError) && checkError.status === 404) {
+        console.log('No existing subscribers found, proceeding with creation')
+      } else {
+        console.error('Error checking existing subscribers:', checkError)
+        throw checkError
+      }
     }
 
-    // Create new subscriber with status object structure matching Cosmic CMS
+    // Create new subscriber with the exact structure matching existing data
+    const subscriberTitle = `Demo Subscriber - ${email}`
+    const subscriberSlug = `demo-subscriber-${email.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()}`
+    
     await cosmicWrite.objects.insertOne({
-      title: `Subscriber - ${email}`,
+      title: subscriberTitle,
+      slug: subscriberSlug,
       type: 'subscribers',
       metadata: {
-        email: email,
+        email: email.toLowerCase(),
         subscribed_date: new Date().toISOString().split('T')[0],
         status: {
           key: 'active',
@@ -103,6 +120,8 @@ export async function subscribeEmail(email: string): Promise<boolean> {
         }
       }
     })
+    
+    console.log(`Successfully subscribed email: ${email}`)
     return true
   } catch (error) {
     console.error('Error subscribing email:', error)
