@@ -43,7 +43,10 @@ export interface Subscriber extends CosmicObject {
   metadata: {
     email?: string;
     subscribed_date?: string;
-    status?: 'Active' | 'Unsubscribed';
+    status?: {
+      key: 'active' | 'unsubscribed';
+      value: 'Active' | 'Unsubscribed';
+    };
   };
 }
 

@@ -90,14 +90,17 @@ export async function subscribeEmail(email: string): Promise<boolean> {
       return false
     }
 
-    // Create new subscriber
+    // Create new subscriber with status object structure matching Cosmic CMS
     await cosmicWrite.objects.insertOne({
       title: `Subscriber - ${email}`,
       type: 'subscribers',
       metadata: {
         email: email,
         subscribed_date: new Date().toISOString().split('T')[0],
-        status: 'Active'
+        status: {
+          key: 'active',
+          value: 'Active'
+        }
       }
     })
     return true
