@@ -1,28 +1,41 @@
-export interface CountdownTime {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-  isExpired: boolean;
-}
+import { CountdownTime } from '@/types'
 
 export function parseTargetDate(dateString: string): Date {
-  const date = new Date(dateString)
-  return isNaN(date.getTime()) ? new Date('2026-09-18T10:00:00-04:00') : date
+  // Handle different date formats
+  if (dateString.includes('T')) {
+    // ISO format with time
+    return new Date(dateString)
+  } else {
+    // Date only format (YYYY-MM-DD)
+    return new Date(dateString + 'T23:59:59')
+  }
 }
 
-export function calculateCountdown(targetDate: Date): CountdownTime {
-  const now = new Date()
-  const timeLeft = targetDate.getTime() - now.getTime()
+export function calculateTimeRemaining(targetDate: Date): CountdownTime {
+  const now = new Date().getTime()
+  const target = targetDate.getTime()
+  const difference = target - now
 
-  if (timeLeft <= 0) {
-    return { days: 0, hours: 0, minutes: 0, seconds: 0, isExpired: true }
+  if (difference <= 0) {
+    return {
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      isExpired: true
+    }
   }
 
-  const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24))
-  const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-  const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))
-  const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000)
+  const days = Math.floor(difference / (1000 * 60 * 60 * 24))
+  const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+  const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
+  const seconds = Math.floor((difference % (1000 * 60)) / 1000)
 
-  return { days, hours, minutes, seconds, isExpired: false }
+  return {
+    days,
+    hours,
+    minutes,
+    seconds,
+    isExpired: false
+  }
 }
